@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacts Management App</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: #f4f6f9;
+            display: flex;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .card {
+            background: #05cadc;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+        }
+
+        h2 {
+            margin-bottom: 15px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 12px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .primary-btn {
+            width: 100%;
+            background: #4a90e2;
+            color: white;
+        }
+
+        .primary-btn:hover {
+            background: #357abd;
+        }
+
+        .contact-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 10px;
+            background: #fafafa;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+
+        .profile {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: #4a90e2;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            margin-right: 10px;
+        }
+
+        .contact-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .contact-details h4 {
+            margin: 0;
+        }
+
+        .contact-details p {
+            margin: 2px 0;
+            font-size: 13px;
+            color: #555;
+        }
+
+        .actions button {
+            margin-left: 5px;
+        }
+
+        .edit-btn {
+            background: #f0ad4e;
+            color: white;
+        }
+
+        .delete-btn {
+            background: #d9534f;
+            color: white;
+        }
+
+        .edit-btn:hover {
+            background: #ec971f;
+        }
+
+        .delete-btn:hover {
+            background: #c9302c;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="card">
+        <h2>Add Contact</h2>
+        <input type="text" id="name" placeholder="Full Name">
+        <input type="email" id="email" placeholder="Email">
+        <input type="text" id="phone" placeholder="Phone Number">
+        <button class="primary-btn" onclick="addOrUpdateContact()" id="submitBtn">Add Contact</button>
+    </div>
+
+    <div class="card">
+        <h2>Contact List</h2>
+        <div id="contactList"></div>
+    </div>
+
+</div>
+
+<script>
+    let contacts = [];
+    let editIndex = null;
+
+    function addOrUpdateContact() {
+        const name = document.getElementById("name").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const phone = document.getElementById("phone").value.trim();
+
+        if (!name || !email || !phone) {
+            alert("Please fill all fields");
+            return;
+        }
+
+        const contact = { name, email, phone };
+
+        if (editIndex === null) {
+            contacts.push(contact);
+        } else {
+            contacts[editIndex] = contact;
+            editIndex = null;
+            document.getElementById("submitBtn").innerText = "Add Contact";
+        }
+
+        clearForm();
+        displayContacts();
+    }
+
+    function displayContacts() {
+        const list = document.getElementById("contactList");
+        list.innerHTML = "";
+
+        contacts.forEach((contact, index) => {
+            const div = document.createElement("div");
+            div.className = "contact-card";
+
+            div.innerHTML = `
+                <div class="contact-info">
+                    <div class="profile">${contact.name.charAt(0).toUpperCase()}</div>
+                    <div class="contact-details">
+                        <h4>${contact.name}</h4>
+                        <p>${contact.email}</p>
+                        <p>${contact.phone}</p>
+                    </div>
+                </div>
+                <div class="actions">
+                    <button class="edit-btn" onclick="editContact(${index})">Edit</button>
+                    <button class="delete-btn" onclick="deleteContact(${index})">Delete</button>
+                </div>
+            `;
+
+            list.appendChild(div);
+        });
+    }
+
+    function editContact(index) {
+        const contact = contacts[index];
+        document.getElementById("name").value = contact.name;
+        document.getElementById("email").value = contact.email;
+        document.getElementById("phone").value = contact.phone;
+        editIndex = index;
+        document.getElementById("submitBtn").innerText = "Update Contact";
+    }
+
+    function deleteContact(index) {
+        contacts.splice(index, 1);
+        displayContacts();
+    }
+
+    function clearForm() {
+        document.getElementById("name").value = "";
+        document.getElementById("email").value = "";
+        document.getElementById("phone").value = "";
+    }
+</script>
+
+</body>
+</html>

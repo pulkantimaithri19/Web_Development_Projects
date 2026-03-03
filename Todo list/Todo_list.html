@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Todo List App</title>
+    <link rel="stylesheet" href="Todo_list.css">
+</head>
+<body>
+
+<div class="full-page">
+    <h1>Todo List App</h1>
+
+    <div class="header-container">
+        <div class="input-container">
+            <input type="text" id="task-input" placeholder="Enter a task">
+            
+            <textarea id="task-description" placeholder="Enter task description"></textarea>
+            
+            <input type="date" id="task-deadline">
+            
+            <button id="add-task-btn">Add</button>
+        </div>
+    </div>
+
+    <!-- Task Display Section -->
+    <div class="form-container" id="task-list"></div>
+    <!-- Task Sections -->
+<div class="form-container">
+
+    <h2>🚨 Urgent Tasks</h2>
+    <div id="urgent-list"></div>
+
+    <h2>📌 To Do Tasks</h2>
+    <div id="todo-list"></div>
+
+    <h2>✅ Completed Tasks</h2>
+    <div id="completed-list"></div>
+
+</div>
+</div>
+
+<script src="Todo_list.js"></script>
+</body>
+</html>
